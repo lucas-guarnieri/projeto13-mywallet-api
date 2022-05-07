@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { singUp } from "../controllers/userController";
+import { singUp } from "./../controllers/userController.js";
 
 const userRouter = Router();
 
