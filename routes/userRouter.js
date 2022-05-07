@@ -1,13 +1,9 @@
 import { Router } from "express";
 
-//fazer impoort balance contreollers
-
+import { singUp } from "../controllers/userController";
 
 const userRouter = Router();
 
-userRouter.post("/singup")  // colocar funcoes 
-userRouter.post("/singout") //
-userRouter.post("/login") //
-
+userRouter.post("/sign-up", singUp); 
 
 export default userRouter;
