@@ -1,9 +1,10 @@
+import { ObjectId } from "mongodb";
 import joi from "joi";
 import dayjs from "dayjs";
 
 import db from "./../db.js";
 
-export async function addTransaction(req,res){
+export async function addTransaction(req, res) {
     const transaction = req.body;
     const { authorization } = req.headers;
 
@@ -39,6 +40,26 @@ export async function addTransaction(req,res){
         console.error(error);
         res.sendStatus(500);
     }
+}
 
+export async function getTransactions(req, res) {
+    const { authorization } = req.headers;
 
-} 
+    const token = authorization?.replace("Bearer ", "").trim();
+    if (!token) {
+        res.sendStatus(401);
+        return;
+    }
+    const session = await db.collection("sessions").findOne({ token });
+    if (!session) {
+        return res.sendStatus(401);
+    }
+
+    try {
+        const transactions = await db.collection("balances").find({userId : new ObjectId(session.userId)}).toArray();
+        res.status(200).send(transactions);
+    } catch (error){
+        console.error(error);
+        res.sendStatus(500);
+    }
+}
