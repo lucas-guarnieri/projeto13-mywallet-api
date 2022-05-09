@@ -51,6 +51,7 @@ export async function getTransactions(req, res) {
         return;
     }
     const session = await db.collection("sessions").findOne({ token });
+    console.log(session.userId);
     if (!session) {
         return res.sendStatus(401);
     }
