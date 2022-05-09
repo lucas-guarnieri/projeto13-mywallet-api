@@ -1,10 +1,12 @@
 import { Router } from "express";
 
 import { singUp, login } from "./../controllers/userController.js";
+import { singupValidation } from "../middlewares/singupValidationSchema.js";
+import { loginValidation } from "../middlewares/loginValidationSchema.js";
 
 const userRouter = Router();
 
-userRouter.post("/sign-up", singUp); 
-userRouter.post("/login", login);
+userRouter.post("/sign-up", singupValidation, singUp); 
+userRouter.post("/login",loginValidation, login);
 
 export default userRouter;

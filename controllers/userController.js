@@ -9,18 +9,6 @@ import db from "./../db.js"
 export async function singUp(req, res){
     const user = req.body;
 
-    const userSingUpSchema = joi.object({
-        name: joi.string().required(),
-        email: joi.string().email().required(),
-        password: joi.string().required(),
-        passwordConfirm: joi.ref("password")
-    });
-    const validation = userSingUpSchema.validate(user);
-    if (validation.error) {
-        res.status(422).send(validation.error.details);
-        return;
-    }
-
     try {
         const findUser = await db.collection("users").findOne({email : user.email});
         if (!findUser){
@@ -42,17 +30,7 @@ export async function singUp(req, res){
 
 export async function login(req, res) {
     const login = req.body;
-
-    const userLoginSchema = joi.object({
-        email: joi.string().email().required(),
-        password: joi.string().required()
-    });
-    const validation = userLoginSchema.validate(login);
-    if (validation.error) {
-        res.status(422).send(validation.error.details);
-        return;
-    }
-
+    
     try {
         const user = await db.collection("users").findOne({email: login.email }); 
         if (user && bcrypt.compareSync(login.password, user.password)){
